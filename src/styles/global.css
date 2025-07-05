@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:100,200,300,regular,500,600,700,800,900,100italic,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic&display=swap');
+
+@import "tailwindcss";
+
+@theme {
+    --default-font-family: 'Roboto, sans-serif';
+
+    --background-image-open-menu: url('../assets/menu.svg');
+    --background-image-close-menu: url('../assets/close.svg');
+}
+
+@layer base {
+    h1, h2, h3, h4, h5, h6 {
+        @apply font-bold;
+    }
+}

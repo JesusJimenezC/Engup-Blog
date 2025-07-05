@@ -1,0 +1,44 @@
+---
+import { Image } from "astro:assets";
+
+import ProfileImage from "../assets/img/profile.png";
+
+import TwitterIcon from "../assets/social/twitter.svg";
+import FacebookIcon from "../assets/social/facebook.svg";
+import YoutubeIcon from "../assets/social/youtube.svg";
+import InstagramIcon from "../assets/social/instagram.svg";
+import TiktokIcon from "../assets/social/tiktok.svg";
+---
+<main
+  class="mt-10 text-center md:text-left w-md md:w-full mx-auto md:mx-0 grid grid-rows-2 md:grid-cols-2 place-items-center">
+  <div>
+    <h1 class="text-4xl font-bold">Bienvenido a <span class="text-blue-500">English</span><span
+      class="text-gray-400">Up</span>
+    </h1>
+
+    <p class="mt-5 text-gray-600">Hola, soy Diana, una chica apasionada del inglés. En este blog
+      encontrarás recursos para aprender y profundizar, reteniendo lo aprendido sin repasar miles de veces lo
+      mismo. Échale un vistazo a mis posts y suscríbete para no perderte novedades.</p>
+
+    <h3 class="mt-5 text-blue-500">Sigueme para mas contenido</h3>
+
+    <ul class="flex flex-row space-x-6 mt-4 w-max mx-auto">
+      <li class="cursor-pointer hover:fill-blue-500 transition-colors">
+        <TiktokIcon />
+      </li>
+      <li class="cursor-pointer hover:fill-blue-500 transition-colors">
+        <InstagramIcon />
+      </li>
+      <li class="cursor-pointer hover:fill-blue-500 transition-colors">
+        <TwitterIcon />
+      </li>
+      <li class="cursor-pointer hover:fill-blue-500 transition-colors">
+        <FacebookIcon />
+      </li>
+      <li class="cursor-pointer hover:fill-blue-500 transition-colors">
+        <YoutubeIcon />
+      </li>
+    </ul>
+  </div>
+  <Image src={ProfileImage} format="avif" alt="Diana" class="rounded-full h-60 w-60 object-cover" />
+</main>
