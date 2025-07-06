@@ -1,0 +1,44 @@
+---
+import type {GetStaticPaths} from "astro";
+import directus from "../../../lib/directus";
+import {readItems} from "@directus/sdk";
+import MainLayout from "../../layout/MainLayout.astro";
+import {Image} from "astro:assets";
+import {remark} from "remark";
+import html from "remark-html";
+import Navbar from "../../components/Navbar.astro";
+
+export const getStaticPaths = (async () => {
+  const posts = await directus.request(
+    readItems("posts", {
+      fields: [
+        "slug",
+        "title",
+        "published_date",
+        {author: ["alias"]},
+        "content",
+        "image",
+        {relation: ['*']}]
+    })
+  )
+  return posts.map(post => ({
+    params: {slug: post.slug},
+    props: post
+  }));
+}) satisfies GetStaticPaths;
+
+const post = Astro.props;
+
+const processedMarkdown = await remark().use(html).process(post.content)
+---
+
+<MainLayout>
+    <Navbar/>
+    <div class="post mt-10">
+        <Image src={`http://localhost:8055/assets/${post.image}`} alt={post.title} width="500" height="500"
+               format="avif"/>
+        <div set:html={processedMarkdown}/>
+        <hr>
+        <span>{post.author.alias}</span>
+    </div>
+</MainLayout>

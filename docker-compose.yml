@@ -1,0 +1,19 @@
+services:
+  directus:
+    image: directus/directus:11
+    env_file:
+      - .env
+    user: "${UID}:${GID}"
+    ports:
+      - 8055:8055
+    volumes:
+      - ./directus/database:/directus/database
+      - ./directus/uploads:/directus/uploads
+      - ./directus/extensions:/directus/extensions
+    environment:
+      SECRET: "directus"
+      ADMIN_EMAIL: "admin@email.com"
+      ADMIN_PASSWORD: "admin"
+      DB_CLIENT: "sqlite3"
+      DB_FILENAME: "/directus/database/data.db"
+      WEBSOCKETS_ENABLED: true
