@@ -15,6 +15,10 @@ type Category = {
   category_name: string;
 };
 
+type PostCategory = {
+  categories_id: Category;
+};
+
 type Post = {
   image: string;
   title: string;
@@ -22,7 +26,7 @@ type Post = {
   content: string;
   published_date: string;
   slug: string;
-  categories: Category[];
+  categories: PostCategory[];
   short_description: string;
 };
 

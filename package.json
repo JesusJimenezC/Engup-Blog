@@ -3,7 +3,7 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "astro dev",
+    "dev": "astro dev --host",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro"
@@ -16,5 +16,9 @@
     "remark": "^15.0.1",
     "remark-html": "^16.0.1",
     "tailwindcss": "^4.1.10"
+  },
+  "devDependencies": {
+    "@vitest/ui": "^3.2.4",
+    "vitest": "^3.2.4"
   }
 }
