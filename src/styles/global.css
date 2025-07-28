@@ -3,7 +3,7 @@
 @import 'tailwindcss';
 
 @theme {
-    --default-font-family: 'Roboto, sans-serif';
+    --default-font-family: 'Roboto', sans-serif;
 
     --background-image-open-menu: url('../assets/menu/menu.svg');
     --background-image-close-menu: url('../assets/menu/close.svg');
