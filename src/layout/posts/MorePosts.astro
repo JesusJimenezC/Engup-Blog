@@ -1,0 +1,30 @@
+---
+import AltPostCard from '../../components/posts/AltPostCard.astro';
+
+const { morePosts } = Astro.props;
+---
+
+<div>
+  {
+    morePosts && morePosts.length > 0 && (
+      <h3 class="text-3xl text-center mb-5 mt-10">Mas Entradas</h3>
+
+      <ul>
+        {
+          morePosts.map(post => (
+            <li>
+              <AltPostCard post={post} />
+            </li>
+          ))
+        }
+      </ul>
+
+      <div class="w-full flex flex-row justify-center">
+        <a href="/posts"
+           class="text-center mt-5 border-b-2 border-transparent text-gray-700 hover:text-blue-500 hover:border-blue-500 transition-colors font-extrabold cursor-pointer">
+          Ver mas entradas
+        </a>
+      </div>
+    )
+  }
+</div>

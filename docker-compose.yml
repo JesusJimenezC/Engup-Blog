@@ -1,19 +1,32 @@
 services:
-  directus:
-    image: directus/directus:11
-    env_file:
-      - .env
-    user: "${UID}:${GID}"
+  app:
+    build: .
+    container_name: engup-blog
     ports:
-      - 8055:8055
+      - ${APP_PORT}:${APP_PORT}
+    environment:
+      DIRECTUS_URL: ${DIRECTUS_URL}
+      DIRECTUS_PUBLIC_URL: ${DIRECTUS_PUBLIC_URL}
+      APP_HOST: ${APP_HOST}
+      APP_PORT: ${APP_PORT}
+    depends_on:
+      - directus
+  directus:
+    image: directus/directus:11.9.3
+    user: '${UID}:${GID}'
+    ports:
+      - ${DIRECTUS_PORT}:${DIRECTUS_PORT}
     volumes:
       - ./directus/database:/directus/database
       - ./directus/uploads:/directus/uploads
-      - ./directus/extensions:/directus/extensions
     environment:
-      SECRET: "directus"
-      ADMIN_EMAIL: "admin@email.com"
-      ADMIN_PASSWORD: "admin"
-      DB_CLIENT: "sqlite3"
-      DB_FILENAME: "/directus/database/data.db"
+      SECRET: ${DIRECTUS_SECRET}
+      ADMIN_EMAIL: ${DIRECTUS_ADMIN_EMAIL}
+      ADMIN_PASSWORD: ${DIRECTUS_ADMIN_PASSWORD}
+      DB_CLIENT: 'sqlite3'
+      DB_FILENAME: '/directus/database/data.db'
       WEBSOCKETS_ENABLED: true
+
+#volumes:
+#  engup-directus:
+#    external: true

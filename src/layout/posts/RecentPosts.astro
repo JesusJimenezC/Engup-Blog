@@ -1,0 +1,23 @@
+---
+import PostCard from '../../components/posts/PostCard.astro';
+
+const { recentPosts } = Astro.props;
+---
+
+<div class="md:mt-16">
+  <h3 class="text-3xl text-center mb-5">Entradas Recientes</h3>
+
+  {
+    recentPosts && recentPosts.length > 0 ? (
+      <ul class="grid grid-cols-1 gap-4 mx-auto sm:grid-cols-2">
+        {
+          recentPosts.map((post, index) => (
+            <li class="bg-white rounded-lg shadow-md cursor-pointer group w-auto h-max overflow-hidden">
+              <PostCard post={post} index={index} />
+            </li>
+          ))
+        }
+      </ul>
+    ) : <p class="text-center">No se encontraron posts. Intenta mas tarde.</p>
+  }
+</div>

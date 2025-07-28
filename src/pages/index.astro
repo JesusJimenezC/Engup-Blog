@@ -1,144 +1,25 @@
 ---
-import MainLayout from '../layout/MainLayout.astro';
-import Navbar from '../components/Navbar.astro';
 import Main from '../components/Main.astro';
-import directus from '../../lib/directus';
-import { readItems } from '@directus/sdk';
-import { Image } from 'astro:assets';
-import Footer from '../components/Footer.astro';
+import MainLayout from '../layout/MainLayout.astro';
+import RecentPosts from '../layout/posts/RecentPosts.astro';
+import MorePosts from '../layout/posts/MorePosts.astro';
+import { getPosts } from '../utils/api';
 
-const recentPosts = await directus.request(
-  readItems('posts', {
-    fields: [
-      'slug',
-      'title',
-      'published_date',
-      'short_description',
-      'image',
-      { author: ['alias'] },
-      { categories: [{ categories_id: ['category_name'] }] },
-    ],
-    sort: '-published_date',
-    limit: 4,
-  }),
-);
+let posts;
 
-const categories = await directus.request(
-  readItems('categories', {
-    fields: ['category_name'],
-  }),
-);
+await getPosts().then(data => {
+  posts = data;
+}).catch(error => {
+  console.error('Error loading posts:', error);
+  posts = [];
+});
 
-const morePosts = await directus.request(
-  readItems('posts', {
-    fields: [
-      'slug',
-      'title',
-      'published_date',
-      'short_description',
-      'image',
-      { author: ['alias'] },
-      { categories: [{ categories_id: ['category_name'] }] },
-    ],
-    sort: '-published_date',
-    limit: 10,
-    offset: 4,
-  }),
-);
-
-const formatDate = (dateString: string) => {
-  const date = new Date(dateString);
-  const hours = date.getHours().toString().padStart(2, '0');
-  const minutes = date.getMinutes().toString().padStart(2, '0');
-  const day = date.getDate().toString().padStart(2, '0');
-  const month = (date.getMonth() + 1).toString().padStart(2, '0');
-  const year = date.getFullYear();
-
-  return `${hours}:${minutes} - ${day}-${month}-${year}`;
-};
+const recentPosts = posts.slice(0, 4) || [];
+const morePosts = posts.slice(4, 9) || [];
 ---
 
 <MainLayout>
-  <Navbar />
   <Main />
-
-  <div>
-    <h3 class="text-3xl text-center mb-5">Recent Posts</h3>
-
-    <ul class="grid grid-cols-2 grid-rows-2 gap-4">
-      {
-        recentPosts.map((post) => (
-          <li class="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer group w-full h-max">
-            <div class="h-2/3 object-cover overflow-hidden">
-              <Image src={`http://localhost:8055/assets/${post.image}`} alt={post.title} width="500" height="500"
-                     format="avif" class="w-full group-hover:scale-110 delay-75 transition-transform" />
-            </div>
-
-            <div class="p-4">
-              <a href={`/post/${post.slug}`}
-                 class="text-lg font-semibold transition-colors delay-75 group-hover:text-blue-500">{post.title}</a>
-
-              <p class="overflow-hidden text-ellipsis line-clamp-3">
-                {post.short_description}
-              </p>
-
-              <span class="block text-gray-500 text-sm mt-2">
-                {formatDate(post.published_date)} &bull; {post.author.alias}
-              </span>
-            </div>
-
-            <div class="px-4 pb-4">
-              <div class="flex flex-wrap gap-1">
-                {post.categories.map((category) => (
-                  <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
-                    {category.categories_id.category_name}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </li>
-        ))
-      }
-    </ul>
-
-    {
-      morePosts.length > 0 && (
-        <h3 class="text-3xl text-center mb-5 mt-10">More Posts</h3>
-
-        <ul>
-          {
-            morePosts.map(post => (
-              <li class="mt-5 flex flex-col bg-white px-4 py-3 rounded-sm shadow-sm group cursor-pointer">
-                <div class="flex flex-col justify-between items-start space-y-4">
-                  <div class="flex-1 mr-4">
-                    <a href={`/post/${post.slug}`}
-                       class="text-sm font-semibold transition-colors delay-75 group-hover:text-blue-500">{post.title}</a>
-
-                    <span
-                      class="block text-gray-500 text-sm transition-colors delay-75 group-hover:text-gray-800 whitespace-nowrap">
-                        {formatDate(post.published_date)} &bull; {post.author.alias}
-                    </span>
-                  </div>
-
-                  <p class="overflow-hidden text-ellipsis line-clamp-3">
-                    {post.short_description}
-                  </p>
-
-                  <div class="flex flex-wrap gap-1">
-                    {post.categories.map((category) => (
-                      <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-full">
-                          {category.categories_id.category_name}
-                        </span>
-                    ))}
-                  </div>
-                </div>
-              </li>
-            ))
-          }
-        </ul>
-      )
-    }
-  </div>
-
-  <Footer />
+  <RecentPosts recentPosts={recentPosts} />
+  <MorePosts morePosts={morePosts} />
 </MainLayout>

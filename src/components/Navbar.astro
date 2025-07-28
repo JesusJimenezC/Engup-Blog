@@ -1,29 +1,35 @@
 ---
-import LogoIcon from "../assets/logo.svg";
-import MenuIcon from "../assets/menu.svg";
+import LogoIcon from '../assets/menu/logo.svg';
 ---
 
-<nav class="bg-white flex justify-between items-center h-10 content-center px-6 mt-6 rounded-full shadow-lg mb-10">
-  <a class="flex flex-row content-center w-max">
+<nav
+  class="mt-6 mb-10 flex h-10 content-center items-center justify-between rounded-full bg-white px-6 shadow-lg w-[90%] mx-auto z-10 max-w-[80ch] fixed">
+  <a href="/" class="flex w-max flex-row content-center">
     <LogoIcon class="w-6 fill-gray-700" />
-    <h1 class="ml-1">Eng<span class="text-gray-400">Up</span></h1>
+    <h1 class="ml-1 text-blue-500">Eng<span class="text-gray-400">Up</span></h1>
   </a>
 
-  <!--Menu Toggle-->
-  <input type="checkbox" class="peer/menu-toggle hidden" id="menu-toggle">
-  <label for="menu-toggle"
-         class="w-10 h-10 bg-open-menu cursor-pointer bg-cover bg-center text-white rounded-lg peer-checked/menu-toggle:bg-close-menu transition-all z-10 md:hidden"></label>
+  <input type="checkbox" class="peer/menu-toggle hidden" id="menu-toggle" />
+  <label
+    for="menu-toggle"
+    class="bg-open-menu peer-checked/menu-toggle:bg-close-menu z-10 h-10 w-10 cursor-pointer rounded-lg bg-cover bg-center text-white transition-all md:hidden"
+  >.</label>
 
   <ul
-    class="fixed inset-0 bg-menu px-[5%] bg-white grid auto-rows-max content-center justify-items-center transition-[clip-path] duration-500 ease-in-out [clip-path:circle(0%_at_top_right)] peer-checked/menu-toggle:[clip-path:circle(150%_at_top_right)] md:[clip-path:unset] md:relative md:grid-flow-col md:p-0 md:bg-transparent gap-6 text-gray-700">
-    <li><a class="py-1 px-2 rounded-full hover:bg-gray-500 hover:text-white cursor-pointer transition-colors">Inicio</a>
+    class="bg-menu fixed inset-0 grid auto-rows-max content-center justify-items-center gap-6 bg-white px-[5%] text-gray-700 transition-[clip-path] duration-500 ease-in-out [clip-path:circle(0%_at_top_right)] peer-checked/menu-toggle:[clip-path:circle(150%_at_top_right)] md:relative md:grid-flow-col md:bg-transparent md:p-0 md:[clip-path:unset]">
+    <li>
+      <a href="/"
+         class="cursor-pointer rounded-full px-2 py-1 transition-colors hover:bg-gray-500 hover:text-white"
+      >Inicio</a>
     </li>
-    <li><a class="py-1 px-2 rounded-full hover:bg-gray-500 hover:text-white cursor-pointer transition-colors">Posts</a>
+    <li>
+      <a href="/posts"
+         class="cursor-pointer rounded-full px-2 py-1 transition-colors hover:bg-gray-500 hover:text-white">Entradas</a>
     </li>
-    <li><a
-      class="py-1 px-2 rounded-full hover:bg-gray-500 hover:text-white cursor-pointer transition-colors">Categorias</a>
-    </li>
-    <li><a class="py-1 px-2 rounded-full hover:bg-gray-500 hover:text-white cursor-pointer transition-colors">Acerca
-      de</a></li>
+    <!--<li>-->
+    <!--  <a href="/"-->
+    <!--     class="cursor-pointer rounded-full px-2 py-1 transition-colors hover:bg-gray-500 hover:text-white">Acerca-->
+    <!--    de</a>-->
+    <!--</li>-->
   </ul>
 </nav>

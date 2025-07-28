@@ -1,0 +1,78 @@
+---
+import formatDate from '../../utils/date-format';
+import Category from '../shared/Category.astro';
+import { Image } from 'astro:assets';
+
+const { post, index } = Astro.props;
+const image = post.image && post.image !== '' ? post.image : '';
+---
+
+<a href={`/posts/${post.id}-${post.slug}`}>
+  <div class="block h-2/3 object-cover overflow-hidden">
+    {
+      image && (
+        <Image
+          src={`${import.meta.env.DIRECTUS_PUBLIC_URL}/assets/${post.image}`}
+          alt={post.title}
+          width="500"
+          height="500"
+          quality={10}
+          loading={index === 0 ? 'eager' : 'lazy'}
+          format="avif"
+          class="w-full group-hover:scale-120 transition-transform"
+          transition:name={post.slug}
+          data-index={index}
+        />
+      )
+    }
+  </div>
+
+  <div class="p-4 space-y-4">
+    <span
+      class="text-lg font-semibold transition-colors group-hover:text-blue-500 text-gray-700 line-clamp-1 text-ellipsis">{post.title}</span>
+
+    <p class="overflow-hidden text-ellipsis line-clamp-3 text-gray-600">
+      {post.short_description}
+    </p>
+
+    <span class="text-gray-500 text-sm mt-2 overflow-hidden">
+                {formatDate(post.published_date)} &bull; {post.author.alias}
+              </span>
+  </div>
+
+  <div class="px-4 pb-4">
+    <div class="flex flex-wrap gap-1">
+      {post.categories.map((category) => (
+        <Category category={category.categories_id.category_name} />
+      ))}
+    </div>
+  </div>
+</a>
+
+<script>
+  function updateImageLoading() {
+    const images = document.querySelectorAll('img[data-index]');
+    const isSmOrLarger = window.matchMedia('(min-width: 640px)').matches;
+
+    images.forEach((img) => {
+      const index = parseInt(img.getAttribute('data-index') || '0');
+      const shouldBeEager = index === 0 || (isSmOrLarger && index === 1);
+
+      if (shouldBeEager) {
+        img.setAttribute('loading', 'eager');
+      } else {
+        img.setAttribute('loading', 'lazy');
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', updateImageLoading);
+
+  window.addEventListener('resize', updateImageLoading);
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', updateImageLoading);
+  } else {
+    updateImageLoading();
+  }
+</script>

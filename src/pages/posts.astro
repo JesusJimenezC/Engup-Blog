@@ -1,0 +1,29 @@
+---
+import MainLayout from '../layout/MainLayout.astro';
+import AltPostCard from '../components/posts/AltPostCard.astro';
+import { getPosts } from '../utils/api';
+
+let posts;
+
+await getPosts().then(data => {
+  posts = data;
+}).catch(error => {
+  console.error('Error loading posts:', error);
+  posts = [];
+});
+---
+
+<MainLayout>
+  <h4 class="text-2xl text-center">Entradas</h4>
+
+  <div>
+    {
+      posts && posts.length > 0 ?
+        posts.map(post => (
+          <article>
+            <AltPostCard post={post} />
+          </article>
+        )) : <p class="text-center mt-5">No se encontraron posts. Intenta mas tarde.</p>
+    }
+  </div>
+</MainLayout>

@@ -1,5 +1,19 @@
 ---
-import "../styles/global.css";
+import { Image } from 'astro:assets';
+
+import Footer from '../components/Footer.astro';
+import Navbar from '../components/Navbar.astro';
+
+import '../styles/global.css';
+import ClientRouter from 'astro/components/ClientRouter.astro';
+
+export interface Props {
+  imagePath?: string;
+  imageAlt?: string;
+  slug?: string;
+}
+
+const { imagePath, imageAlt = 'Image', slug } = Astro.props;
 ---
 
 <html lang="en">
@@ -7,10 +21,32 @@ import "../styles/global.css";
   <meta charset="utf-8" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <meta name="viewport" content="width=device-width" />
+  <ClientRouter />
   <meta name="generator" content={Astro.generator} />
   <title>Astro</title>
 </head>
-<body class="bg-gray-100 w-[90%] mx-auto">
-<slot />
+<body class="mx-auto bg-gray-100 min-h-screen flex flex-col items-center">
+<Navbar />
+
+<div class="mt-28 w-full grow">
+  {imagePath && (
+    <Image
+      src={imagePath}
+      alt={imageAlt}
+      width="800"
+      height="400"
+      format="avif"
+      loading="eager"
+      class="w-full max-h-96 object-cover mb-5"
+      transition:name={slug}
+    />
+  )}
+
+  <div class="w-[90%] max-w-prose mx-auto">
+    <slot />
+  </div>
+</div>
+
+<Footer />
 </body>
 </html>

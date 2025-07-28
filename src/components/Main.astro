@@ -1,47 +1,73 @@
 ---
 import { Image } from 'astro:assets';
 
-import ProfileImage from '../assets/img/profile.png';
-
-import TwitterIcon from '../assets/social/twitter.svg';
 import FacebookIcon from '../assets/social/facebook.svg';
-import YoutubeIcon from '../assets/social/youtube.svg';
 import InstagramIcon from '../assets/social/instagram.svg';
+import ProfileImage from '../assets/img/profile.png';
 import TiktokIcon from '../assets/social/tiktok.svg';
+import TwitterIcon from '../assets/social/twitter.svg';
+import YoutubeIcon from '../assets/social/youtube.svg';
 
-import directus from '../../lib/directus';
-import { readSingleton } from '@directus/sdk';
+import { getGlobal } from '../utils/api';
 
-const global = await directus.request(readSingleton('global'));
+let global;
+
+await getGlobal().then((data) => {
+  global = data;
+}).catch((error) => {
+  console.error('Error fetching global:', error);
+  global = null;
+});
 ---
+
 <main
-  class="text-center md:text-left w-md md:w-full mx-auto md:mx-0 grid grid-rows-2 md:grid-cols-2 place-items-center">
+  class="mx-auto grid w-full grid-rows-[minmax(0,1fr)] place-items-center text-center md:mx-0 md:grid-cols-2 md:text-left">
   <div>
-    <h1 class="text-4xl font-bold">Bienvenido a <span class="text-blue-500">English</span><span
-      class="text-gray-400">Up</span>
+    <h1 class="text-4xl font-bold">
+      Bienvenido a <span class="text-blue-500">English</span><span class="text-gray-400">Up</span>
     </h1>
 
-    <p class="mt-5 text-gray-600">{global.description}</p>
+    <p
+      class="mt-5 text-gray-600">{global ? global.description : 'Escribe una descripcion en el panel de administracion.'}</p>
 
     <h3 class="mt-5 text-blue-500">Sigueme para mas contenido</h3>
 
-    <ul class="flex flex-row space-x-6 mt-4 w-max mx-auto">
-      <li class="cursor-pointer hover:fill-blue-500 transition-colors">
-        <TiktokIcon />
+    <ul class="mt-4 flex flex-row justify-between w-3/5 md:w-full mx-auto">
+      <li class="cursor-pointer group">
+        <div
+          class="group-hover:drop-shadow-[2px_2px_0px_#ff0050] transition-all">
+          <TiktokIcon
+            class="w-6 h-6 md:w-8 md:h-8 fill-gray-500 group-hover:drop-shadow-[-2px_-2px_0px_#00f2ea] transition-all group-hover:fill-black" />
+        </div>
       </li>
-      <li class="cursor-pointer hover:fill-blue-500 transition-colors">
-        <InstagramIcon />
+      <li class="cursor-pointer group">
+        <div class="relative rounded-md overflow-hidden">
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-purple-600 via-red-500 to-yellow-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-md"></div>
+          <div class="relative z-5">
+            <InstagramIcon
+              class="w-6 h-6 fill-gray-500 md:w-8 md:h-8 group-hover:fill-white transition-[fill] duration-300" />
+          </div>
+        </div>
       </li>
-      <li class="cursor-pointer hover:fill-blue-500 transition-colors">
-        <TwitterIcon />
+      <li
+        class="cursor-pointer">
+        <TwitterIcon class="w-6 h-6 md:w-8 md:h-8 fill-gray-500 hover:fill-blue-500 transition-colors" />
       </li>
-      <li class="cursor-pointer hover:fill-blue-500 transition-colors">
-        <FacebookIcon />
+      <li class="cursor-pointer">
+        <FacebookIcon class="w-6 h-6 md:w-8 md:h-8 fill-gray-500 hover:fill-blue-700 transition-colors" />
       </li>
-      <li class="cursor-pointer hover:fill-blue-500 transition-colors">
-        <YoutubeIcon />
+      <li class="cursor-pointer">
+        <YoutubeIcon class="w-6 h-6 md:w-8 md:h-8 fill-gray-500 hover:fill-red-600 transition-colors" />
       </li>
     </ul>
   </div>
-  <Image src={ProfileImage} format="avif" alt="Diana" class="rounded-full h-40 w-40 object-cover" />
+
+  <Image
+    src={ProfileImage}
+    format="avif"
+    loading="eager"
+    alt="Diana"
+    class="w-60 mt-4 mb-8"
+  />
 </main>
