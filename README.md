@@ -138,36 +138,6 @@ export default function rehypeAstroImage() {
 }
 ```
 
-### Type-Safe Directus Integration
-
-```typescript
-interface Post {
-  id: number;
-  image: string;
-  title: string;
-  author: Author;
-  content: string;
-  published_date: string;
-  slug: string;
-  status: string;
-  categories: PostCategory[];
-  short_description: string;
-}
-
-const directus = createDirectus<Schema>(directusUrl).with(rest());
-```
-
-### View Transitions Implementation
-
-```astro
-<Image
-  src={imagePath}
-  alt={imageAlt}
-  transition:name={slug}
-  class="w-full max-h-96 object-cover"
-/>
-```
-
 ## 🔧 Development Commands
 
 ```bash
